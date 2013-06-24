@@ -16,7 +16,8 @@ try:
     from Cython.Build import cythonize
 except ImportError:
     import os
-    if not os.path.exists('cyflann/index.c'):
+    src_path = os.path.join(os.path.dirname(__file__), 'cyflann')
+    if not os.path.exists(os.path.join(src_path, 'index.c')):
         msg = "index extension needs to be compiled but cython isn't available"
         raise ImportError(msg)
 else:
