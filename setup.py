@@ -31,6 +31,7 @@ setup(
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann'],
+    package_data={'cyflann': ['*.pxd']},
     url='https://github.com/dougalsutherland/cyflann',
     description='A Cython-based interface to the FLANN nearest neighbors library.',
     long_description=open('README.rst').read(),
