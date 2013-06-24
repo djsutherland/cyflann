@@ -28,7 +28,7 @@ ext_modules = [
 
 setup(
     name='cyflann',
-    version='0.1.1',
+    version='0.1.2',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann'],
