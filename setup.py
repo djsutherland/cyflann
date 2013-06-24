@@ -17,19 +17,18 @@ try:
 except ImportError:
     import os
     try:
-        pyx_time = os.path.getmtime('cyflann/flann_index.pyx')
+        pyx_time = os.path.getmtime('cyflann/index.pyx')
         pxd_time = os.path.getmtime('cyflann/flann.pxd')
-        c_time = os.path.getmtime('cyflann/flann_index.c'.format(pkg, name))
+        c_time = os.path.getmtime('cyflann/index.c'.format(pkg, name))
         if max(pyx_time, pxd_time) >= c_time:
             raise ValueError
     except (OSError, ValueError):
         msg = "{} extension needs to be compiled but cython isn't available"
         raise ImportError(msg.format(name))
 else:
-    cythonize("cyflann/flann_index.pyx", "cyflann/flann.pdx")
+    cythonize("cyflann/index.pyx", "cyflann/flann.pdx")
 ext_modules = [
-    Extension("cyflann.flann_index", ["cyflann/flann_index.c"],
-              extra_link_args=['-lflann'])
+    Extension("cyflann.index", ["cyflann/index.c"], extra_link_args=['-lflann'])
 ]
 
 setup(

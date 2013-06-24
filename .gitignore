@@ -1,9 +1,9 @@
 *.pyc
 __pycache__
+*.so
 
 /build
 /dist
 /cyflann.egg-info
 
-/cyflann/flann_index.c
-*.so
+/cyflann/index.c
