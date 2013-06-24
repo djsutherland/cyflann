@@ -88,7 +88,7 @@ def set_distance_type(str distance_type, int order = 0):
 ### Wrapping parameters struct
 
 cdef class FLANNParameters:
-    cdef Parameters _this
+    # attributes in the pxd: _this
     def __cinit__(self):
         self._this = DEFAULT_PARAMETERS
 
@@ -242,11 +242,7 @@ cdef class FLANNParameters:
 
 # TODO: template across different types
 cdef class FLANNIndex:
-    cdef index_t _this
-    cdef public float[:, ::1] _data
-
-    cdef public float speedup
-    cdef public FLANNParameters params
+    # attributes in the pxd: _this, _data, speedup, params
 
     def __cinit__(self):
         self._this = NULL
