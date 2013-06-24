@@ -16,15 +16,9 @@ try:
     from Cython.Build import cythonize
 except ImportError:
     import os
-    try:
-        pyx_time = os.path.getmtime('cyflann/index.pyx')
-        pxd_time = os.path.getmtime('cyflann/flann.pxd')
-        c_time = os.path.getmtime('cyflann/index.c'.format(pkg, name))
-        if max(pyx_time, pxd_time) >= c_time:
-            raise ValueError
-    except (OSError, ValueError):
-        msg = "{} extension needs to be compiled but cython isn't available"
-        raise ImportError(msg.format(name))
+    if not os.path.exists('cyflann/index.c'):
+        msg = "index extension needs to be compiled but cython isn't available"
+        raise ImportError(msg)
 else:
     cythonize("cyflann/index.pyx", "cyflann/flann.pdx")
 ext_modules = [
