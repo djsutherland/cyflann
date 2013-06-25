@@ -335,7 +335,7 @@ cdef class FLANNIndex:
 
         self._nn_index(the_qpts, num_neighbors, idx, dists)
         if num_neighbors == 1:
-            return idx[0, :], dists[0, :]
+            return idx[:, 0], dists[:, 0]
         else:
             return idx, dists
 
