@@ -273,7 +273,7 @@ cdef class FLANNIndex:
                     dtype=np.float32)
         if array.ndim == 1:
             array = array.reshape(1, array.size)
-        if array.ndim > 2:
+        if array.ndim != 2:
             raise ValueError("expected a 2d array")
         return array
 
