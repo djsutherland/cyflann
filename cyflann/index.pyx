@@ -288,6 +288,7 @@ cdef class FLANNIndex:
         self.params.update(**kwargs)
         self._build_index(the_pts)
 
+    @cython.boundscheck(False)
     cdef void _build_index(self, float[:, ::1] pts) nogil:
         if self._this is not NULL:
             self._free_index()
