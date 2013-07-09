@@ -268,6 +268,7 @@ cdef class FLANNIndex:
         if self._this is not NULL:
             self._free_index()
 
+
     ############################################################################
     ### general helpers
 
@@ -464,4 +465,69 @@ cdef class FLANNIndex:
             self._this, query=&query[0], indices=&idx[0], dists=&dists[0],
             max_nn=max_nn, radius=radius, flann_params=&self.params._this)
 
-    # TODO: clustering functions
+
+    ############################################################################
+    ### Clustering functions
+
+    def kmeans(self, pts, int num_clusters, int max_iterations = -1, **kwargs):
+        """
+        Runs k-means on pts with num_clusters centroids.
+        Returns a numpy array of shape (num_clusters x dim).
+
+        If max_iterations is not -1, the algorithm terminates after the given
+        number of iterations regardless of convergence. The default is to run
+        until convergence.
+        """
+
+        if num_clusters < 1:
+            raise ValueError("num_clusters should be a positive integer")
+        elif num_clusters == 1:
+            return np.mean(pts, axis=0).reshape(1, pts.shape[1])
+
+        return self.hierarchical_kmeans(
+            pts=pts, branch_size=int(num_clusters), num_branches=1,
+            max_iterations=max_iterations, **kwargs)
+
+    def hierarchical_kmeans(self, pts, int branch_size, int num_branches,
+                            int max_iterations = -1, **kwargs):
+        """
+        Clusters the data by using multiple runs of kmeans to
+        recursively partition the dataset. The number of resulting
+        clusters is given by (branch_size-1)*num_branches+1.
+
+        This method can be significantly faster when the number of
+        desired clusters is quite large (e.g. a hundred or more).
+        Higher branch sizes are slower but may give better results.
+        """
+
+        if branch_size < 2:
+            raise ValueError("branch_size must be an integer >= 2")
+        if num_branches < 1:
+            raise ValueError("num_branches must be an integer >= 1")
+
+        cdef float[:, ::1] the_pts = self._check_array(pts)
+        cdef int npts = the_pts.shape[0], dim = the_pts.shape[1]
+        cdef int num_clusters = (branch_size - 1) * num_branches + 1
+
+        self._ensure_random_seed(kwargs)
+        self.params.update(**kwargs)
+        self.params.iterations = max_iterations
+        self.params.algorithm = 'kmeans'
+        self.params.branching = branch_size
+
+        cdef np.ndarray result = np.empty((num_clusters, dim), dtype=np.float32)
+
+        cdef int real_numclusters = self._hierarchical_kmeans(
+            the_pts, num_clusters, result)
+
+        if real_numclusters <= 0:
+            raise ValueError("Error occurred during clustering procedure.")
+        return result
+
+    @cython.boundscheck(False)
+    cdef int _hierarchical_kmeans(self, float[:, ::1] pts, int num_clusters,
+                                  float[:, ::1] result) nogil:
+        return flann.flann_compute_cluster_centers_float(
+            dataset=&pts[0,0], rows=pts.shape[0], cols=pts.shape[1],
+            clusters=num_clusters, result=&result[0, 0],
+            flann_params=&self.params._this)

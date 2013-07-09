@@ -14,6 +14,7 @@ cdef class FLANNIndex:
     cdef void _free_index(self) nogil
 
     cpdef _check_array(self, array, int dim=?)
+    cdef _ensure_random_seed(self, kwargs)
 
     cdef void _nn(self, float[:, ::1] pts, float[:, ::1] qpts,
                   int num_neighbors, int[:, ::1] idx, float[:, ::1] dists) nogil
@@ -26,3 +27,6 @@ cdef class FLANNIndex:
                         int[:, ::1] idx, float[:, ::1] dists) nogil
     cdef int _nn_radius(self, float[:] query, float radius, int max_nn,
                         int[:] idx, float[:] dists) nogil
+
+    cdef int _hierarchical_kmeans(self, float[:, ::1] pts, int num_clusters,
+                                  float[:, ::1] result) nogil
