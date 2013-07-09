@@ -104,11 +104,11 @@ for ext in ext_modules:
 
 setup(
     name='cyflann',
-    version='0.1.4',
+    version='0.1.5',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann'],
-    package_data={'cyflann': ['*.pxd']},
+    package_data={'cyflann': ['*.pyx', '*.pxd']},
     url='https://github.com/dougalsutherland/cyflann',
     description='A Cython-based interface to the FLANN nearest neighbors '
                 'library.',
