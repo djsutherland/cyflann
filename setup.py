@@ -130,4 +130,5 @@ setup(
         "Programming Language :: Cython",
         "Programming Language :: Python :: Implementation :: CPython",
     ],
+    zip_safe=False,  # not unsafe but no point, since it's just a c ext
 )
