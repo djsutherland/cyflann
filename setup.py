@@ -21,11 +21,15 @@ except ImportError:
     if not os.path.exists(os.path.join(src_path, 'index.c')):
         msg = "index extension needs to be compiled but cython isn't available"
         raise ImportError(msg)
+    ext_modules = [
+        Extension("cyflann.index", ["cyflann/index.c"]),
+    ]
 else:
-    cythonize("cyflann/index.pyx", "cyflann/flann.pdx")
-ext_modules = [
-    Extension("cyflann.index", ["cyflann/index.c"], extra_link_args=['-lflann'])
-]
+    ext_modules = cythonize("cyflann/*.pyx", "cyflann/*.pdx")
+
+for ext in ext_modules:  # why doesn't cythonize let you do this?
+    ext.extra_link_args = ['-lflann']
+
 
 setup(
     name='cyflann',
