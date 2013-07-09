@@ -259,7 +259,8 @@ cdef class FLANNIndex:
     cdef void _free_index(self) nogil:
         flann.flann_free_index_float(self._this, &self.params._this)
         self._this = NULL
-        # self._data = NULL  # XXX memory management for _data
+        with gil:  # TODO: how to actually handle this?
+            self._data = np.empty((0, 0), dtype=np.float32)
 
     def __dealloc__(self):
         if self._this is not NULL:
