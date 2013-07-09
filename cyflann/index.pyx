@@ -252,6 +252,8 @@ cdef class FLANNIndex:
 
     def __init__(self, **kwargs):
         self.params.update(**kwargs)
+        self._rn_gen = np.random.RandomState()
+        self._rn_gen.seed()
 
     def free_index(self):
         self._free_index()
@@ -259,7 +261,7 @@ cdef class FLANNIndex:
     cdef void _free_index(self) nogil:
         flann.flann_free_index_float(self._this, &self.params._this)
         self._this = NULL
-        with gil:  # TODO: how to actually handle this?
+        with gil:  # TODO: how to handle this more appropriately?
             self._data = np.empty((0, 0), dtype=np.float32)
 
     def __dealloc__(self):
@@ -267,6 +269,11 @@ cdef class FLANNIndex:
             self._free_index()
 
     ############################################################################
+    ### general helpers
+
+    cdef _ensure_random_seed(self, kwargs):
+        if 'random_seed' not in kwargs:
+            kwargs['random_seed'] = self._rn_gen.randint(2 ** 30)
 
     cpdef _check_array(self, array, int dim=2):
         array = np.require(array,
@@ -279,7 +286,29 @@ cdef class FLANNIndex:
         return array
 
     ############################################################################
-    ### The actual functions that do work
+    ### I/O
+
+    cpdef save_index(self, bytes filename):
+        "Saves the index to a file on disk."
+        if self._this is NULL:
+            raise ValueError("index doesn't exist, can't save it")
+        flann.flann_save_index_float(self._this, filename)
+
+
+    def load_index(self, bytes filename, pts):
+        "Loads an index previously saved to disk."
+        cdef float[:, ::1] the_pts = self._check_array(pts)
+        self._load_index(filename, the_pts)
+
+    cdef void _load_index(self, bytes filename, float[:, ::1] pts):
+        self._free_index()
+        self._this = flann.flann_load_index_float(
+            filename, &pts[0, 0], pts.shape[0], pts.shape[1])
+        self._data = pts
+
+
+    ############################################################################
+    ### Main NN search functions
 
     def nn(self, pts, qpts, int num_neighbors = 1, **kwargs):
         '''
@@ -302,6 +331,8 @@ cdef class FLANNIndex:
             raise ValueError("asking for {} neighbors from a set of size {}"
                              .format(num_neighbors, npts))
 
+        # TODO: should this set the random seed? pyflann doesn't, but seems
+        #       like it should be the same as build_index()...
         self.params.update(**kwargs)
 
         cdef tuple shape = (nqpts, num_neighbors)
@@ -336,6 +367,7 @@ cdef class FLANNIndex:
         '''
         # TODO: handle random seed
         cdef float[:, ::1] the_pts = self._check_array(pts)
+        self._ensure_random_seed(kwargs)
         self.params.update(**kwargs)
         self._build_index(the_pts)
 
@@ -348,25 +380,6 @@ cdef class FLANNIndex:
         self._this = flann.flann_build_index_float(
             &pts[0, 0], pts.shape[0], pts.shape[1],
             &self.speedup, &self.params._this)
-        self._data = pts
-
-
-    cpdef save_index(self, bytes filename):
-        "Saves the index to a file on disk."
-        if self._this is NULL:
-            raise ValueError("index doesn't exist, can't save it")
-        flann.flann_save_index_float(self._this, filename)
-
-
-    def load_index(self, bytes filename, pts):
-        "Loads an index previously saved to disk."
-        cdef float[:, ::1] the_pts = self._check_array(pts)
-        self._load_index(filename, the_pts)
-
-    cdef void _load_index(self, bytes filename, float[:, ::1] pts):
-        self._free_index()
-        self._this = flann.flann_load_index_float(
-            filename, &pts[0, 0], pts.shape[0], pts.shape[1])
         self._data = pts
 
 

@@ -9,6 +9,7 @@ cdef class FLANNIndex:
 
     cdef public float speedup
     cdef public FLANNParameters params
+    cdef public object _rn_gen
 
     cdef void _free_index(self) nogil
 
