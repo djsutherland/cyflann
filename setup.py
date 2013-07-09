@@ -12,6 +12,7 @@ except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
 
+
 try:
     from Cython.Build import cythonize
 except ImportError:
@@ -34,9 +35,10 @@ setup(
     packages=['cyflann'],
     package_data={'cyflann': ['*.pxd']},
     url='https://github.com/dougalsutherland/cyflann',
-    description='A Cython-based interface to the FLANN nearest neighbors library.',
+    description='A Cython-based interface to the FLANN nearest neighbors '
+                'library.',
     long_description=open('README.rst').read(),
-    license='LICENSE.txt',
+    license='BSD 3-clause',
     install_requires=[],
     include_dirs=[numpy.get_include()],
     ext_modules=ext_modules,
