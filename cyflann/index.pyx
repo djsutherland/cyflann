@@ -408,5 +408,46 @@ cdef class FLANNIndex:
             indices=&idx[0, 0], dists=&dists[0, 0], nn=num_neighbors,
             flann_params=&self.params._this)
 
-    # TODO: nn_radius
+
+    def nn_radius(self, query, float radius, int max_nn=-1, **kwargs):
+        """
+        Finds points within a given radius of the query point, based on the
+        index from build_index().
+
+        Note that in the default euclidean metric, radius should be the
+        *squared* euclidean distance.
+
+        Finds up to min(max_nn, params.max_neighbors) points. (If either value
+        is negative, it's interpreted as meaning all possible points.)
+
+        params.sorted indicates whether the results should be sorted.
+        """
+        if self._this is NULL:
+            raise ValueError("need to build index first")
+
+        cdef float[:] the_query = self._check_array(query, dim=1)
+
+        cdef int npts = self._data.shape[0], dim = self._data.shape[1]
+        cdef int qdim = the_query.shape[0]
+        if qdim != dim:
+            raise TypeError("data is dim {}, query is dim {}".format(dim, qdim))
+
+        self.params.update(**kwargs)
+
+        if max_nn < 0:
+            max_nn = npts
+
+        cdef np.ndarray idx = np.empty(max_nn, dtype=np.int32)
+        cdef np.ndarray dists = np.empty(max_nn, dtype=np.float32)
+
+        cdef int nn = self._nn_radius(the_query, radius, max_nn, idx, dists)
+        return idx[:nn], dists[:nn]
+
+    @cython.boundscheck(False)
+    cdef int _nn_radius(self, float[:] query, float radius, int max_nn,
+                        int[:] idx, float[:] dists) nogil:
+        return flann.flann_radius_search(
+            self._this, query=&query[0], indices=&idx[0], dists=&dists[0],
+            max_nn=max_nn, radius=radius, flann_params=&self.params._this)
+
     # TODO: clustering functions

@@ -23,3 +23,5 @@ cdef class FLANNIndex:
 
     cdef void _nn_index(self, float[:, ::1] qpts, int num_neighbors,
                         int[:, ::1] idx, float[:, ::1] dists) nogil
+    cdef int _nn_radius(self, float[:] query, float radius, int max_nn,
+                        int[:] idx, float[:] dists) nogil
