@@ -267,22 +267,72 @@ cdef class FLANNIndex:
 
     ############################################################################
 
-    cpdef _check_array(self, array):
+    cpdef _check_array(self, array, int dim=2):
         array = np.require(array,
                     requirements=['C_CONTIGUOUS', 'ALIGNED'],
                     dtype=np.float32)
-        if array.ndim == 1:
+        if dim == 2 and array.ndim == 1:
             array = array.reshape(1, array.size)
-        if array.ndim != 2:
-            raise ValueError("expected a 2d array")
+        if array.ndim != dim:
+            raise ValueError("expected a {}d array".format(dim))
         return array
 
     ############################################################################
     ### The actual functions that do work
 
-    # TODO: nn()
+    def nn(self, pts, qpts, int num_neighbors = 1, **kwargs):
+        '''
+        Finds the num_neighbors nearest points to each point in pts.
+
+        Returns a pair:
+            - a (num_qpts, num_neighbors) integer array of indices
+            - a (num_qpts, num_neighbors) float array of distances
+        If num_neighbors == 1, the results are 1-dimensional.
+        '''
+        cdef float[:, ::1] the_pts = self._check_array(pts)
+        cdef float[:, ::1] the_qpts = self._check_array(qpts)
+
+        cdef int npts = the_pts.shape[0], dim = the_pts.shape[1]
+        cdef int nqpts = the_qpts.shape[0], qdim = the_qpts.shape[1]
+        if qdim != dim:
+            raise TypeError("data is dim {}, query is dim {}".format(dim, qdim))
+
+        if num_neighbors > npts:
+            raise ValueError("asking for {} neighbors from a set of size {}"
+                             .format(num_neighbors, npts))
+
+        self.params.update(**kwargs)
+
+        cdef tuple shape = (nqpts, num_neighbors)
+        cdef np.ndarray idx = np.empty(shape, dtype=np.int32)
+        cdef np.ndarray dists = np.empty(shape, dtype=np.float32)
+
+        self._nn(the_pts, the_qpts, num_neighbors, idx, dists)
+        if num_neighbors == 1:
+            return idx[:, 0], dists[:, 0]
+        else:
+            return idx, dists
+
+    @cython.boundscheck(False)
+    cdef void _nn(self, float[:, ::1] pts, float[:, ::1] qpts,
+                  int num_neighbors,
+                  int[:, ::1] idx, float[:, ::1] dists) nogil:
+        flann.flann_find_nearest_neighbors_float(
+            dataset=&pts[0, 0], rows=pts.shape[0], cols=pts.shape[1],
+            testset=&qpts[0, 0], trows=qpts.shape[0],
+            indices=&idx[0, 0], dists=&dists[0, 0],
+            nn=num_neighbors, flann_params=&self.params._this)
+
 
     def build_index(self, pts, **kwargs):
+        '''
+        This builds and stores an index to be used for future searches with
+        nn_index(), overriding any previous index. Use multiple instances of
+        this class to work with multiple stored indices.
+
+        pts should be a 2d, row-instance numpy array. It will be converted to
+        float32 before being used.
+        '''
         # TODO: handle random seed
         cdef float[:, ::1] the_pts = self._check_array(pts)
         self.params.update(**kwargs)
@@ -299,21 +349,31 @@ cdef class FLANNIndex:
             &self.speedup, &self.params._this)
         self._data = pts
 
+
     cpdef save_index(self, bytes filename):
+        "Saves the index to a file on disk."
         if self._this is NULL:
             raise ValueError("index doesn't exist, can't save it")
         flann.flann_save_index_float(self._this, filename)
 
+
     def load_index(self, bytes filename, pts):
+        "Loads an index previously saved to disk."
         cdef float[:, ::1] the_pts = self._check_array(pts)
         self._load_index(filename, the_pts)
+
     cdef void _load_index(self, bytes filename, float[:, ::1] pts):
         self._free_index()
         self._this = flann.flann_load_index_float(
             filename, &pts[0, 0], pts.shape[0], pts.shape[1])
         self._data = pts
 
+
     def nn_index(self, qpts, int num_neighbors = 1, **kwargs):
+        '''
+        Returns the num_neighbors nearest points to each point in qpts.
+        Searches in the index previously built by build_index().
+        '''
         if self._this is NULL:
             raise ValueError("need to build index first")
 

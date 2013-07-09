@@ -12,8 +12,10 @@ cdef class FLANNIndex:
 
     cdef void _free_index(self) nogil
 
-    cpdef _check_array(self, array)
+    cpdef _check_array(self, array, int dim=?)
 
+    cdef void _nn(self, float[:, ::1] pts, float[:, ::1] qpts,
+                  int num_neighbors, int[:, ::1] idx, float[:, ::1] dists) nogil
     cdef void _build_index(self, float[:, ::1] pts) nogil
 
     cpdef save_index(self, bytes filename)
