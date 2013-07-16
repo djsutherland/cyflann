@@ -313,6 +313,8 @@ cdef class FLANNIndex:
             filename, &pts[0, 0], pts.shape[0], pts.shape[1])
         self._data = pts
 
+    def __getstate__(self):
+        raise TypeError("cyflann objects are currently not pickleable")
 
     ############################################################################
     ### Main NN search functions
