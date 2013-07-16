@@ -104,7 +104,7 @@ for ext in ext_modules:
 
 setup(
     name='cyflann',
-    version='0.1.6',
+    version='0.1.7-dev',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann'],
