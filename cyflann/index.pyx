@@ -268,6 +268,12 @@ cdef class FLANNIndex:
         if self._this is not NULL:
             self._free_index()
 
+    property data:
+        def __get__(self):
+            try:
+                return np.asarray(self._data)
+            except AttributeError:
+                return None
 
     ############################################################################
     ### general helpers

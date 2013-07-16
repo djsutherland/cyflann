@@ -5,7 +5,7 @@ cdef class FLANNParameters:
 
 cdef class FLANNIndex:
     cdef index_t _this
-    cdef public float[:, ::1] _data
+    cdef float[:, ::1] _data
 
     cdef public float speedup
     cdef public FLANNParameters params
