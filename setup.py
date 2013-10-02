@@ -79,6 +79,7 @@ def get_pkg_info(name):
         'library_dirs': ask('--libs-only-L', '-L', sysroot=True),
         'extra_compile_args': ask('--cflags-only-other'),
         'extra_link_args': ask('--libs-only-other'),
+        'runtime_library_dirs': ask('--variable=libdir'),
     }
 
 flann_info = get_pkg_info('flann')
