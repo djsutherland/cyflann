@@ -5,8 +5,8 @@ import subprocess
 
 try:
     import numpy
-except ImportError:
-    raise ImportError("cyflann requires numpy to be installed")
+except ImportError as e:
+    raise ImportError("cyflann requires numpy to be installed:\n{}".format(e))
     # Don't do this in the setup() requirements, because otherwise pip and
     # friends get too eager about updating numpy.
 
