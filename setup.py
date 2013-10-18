@@ -82,7 +82,18 @@ def get_pkg_info(name):
         'runtime_library_dirs': ask('--variable=libdir'),
     }
 
-flann_info = get_pkg_info('flann')
+if os.environ.get('FLANN_DIR', False):
+    pre = partial(os.path.join, os.environ['FLANN_DIR'])
+    flann_info = {
+        'libraries': ['flann', 'flann_cpp'],
+        'include_dirs': [pre('include')],
+        'library_dirs': [pre('lib')],
+        'extra_compile_args': [],
+        'extra_link_args': [],
+        'runtime_libarry_dirs': [pre('lib')],
+    }
+else:
+    flann_info = get_pkg_info('flann')
 
 ################################################################################
 
