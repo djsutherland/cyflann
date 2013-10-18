@@ -108,7 +108,7 @@ setup(
     version='0.1.9-dev',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
-    packages=['cyflann'],
+    packages=['cyflann', 'cyflann.tests'],
     package_data={'cyflann': ['*.pyx', '*.pxd']},
     url='https://github.com/dougalsutherland/cyflann',
     description='A Cython-based interface to the FLANN nearest neighbors '
