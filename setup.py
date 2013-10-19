@@ -90,7 +90,7 @@ if os.environ.get('FLANN_DIR', False):
         'library_dirs': [pre('lib')],
         'extra_compile_args': [],
         'extra_link_args': [],
-        'runtime_libarry_dirs': [pre('lib')],
+        'runtime_library_dirs': [pre('lib')],
     }
 else:
     flann_info = get_pkg_info('flann')
