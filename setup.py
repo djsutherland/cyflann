@@ -2,6 +2,7 @@ import errno
 from functools import partial
 import os
 import subprocess
+import sys
 
 try:
     import numpy
@@ -94,6 +95,21 @@ if os.environ.get('FLANN_DIR', False):
     }
 else:
     flann_info = get_pkg_info('flann')
+
+if sys.platform == 'darwin':
+    # OSX rpath support is weird and stupid; just use an absolute path instead
+    ld = flann_info['library_dirs']
+    rld = flann_info['runtime_library_dirs']
+
+    if len(ld) == 1 and rld == ld:
+        del flann_info['runtime_library_dirs'], flann_info['library_dirs']
+        flann_info['libraries'] = [
+            os.path.join(ld[0], lib) for lib in flann_info['libraries']]
+    else:
+        import warnings
+        msg = "Something unexpected is going on here. Good luck!"
+        warnings.warn(msg)
+
 
 ################################################################################
 
