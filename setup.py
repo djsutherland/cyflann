@@ -105,6 +105,8 @@ if sys.platform == 'darwin':
         del flann_info['runtime_library_dirs'], flann_info['library_dirs']
         flann_info['libraries'] = [
             os.path.join(ld[0], lib) for lib in flann_info['libraries']]
+    elif not ld and not rld:
+        pass
     else:
         import warnings
         msg = "Something unexpected is going on here. Good luck!"
