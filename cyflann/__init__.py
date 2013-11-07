@@ -32,7 +32,7 @@ def get_flann_lib():
             if 'libflann' in fname and 'libflann_cpp' not in fname:
                 fname = fname.replace('@loader_path', os.path.dirname(so_name))
                 return os.path.abspath(fname)
-    elif sys.platform == 'linux':
+    elif sys.platform.startswith('linux'):
         out = subprocess.check_output(['ldd', so_name]).split('\n')
         for line in out:
             shortname, path = re.match(_ldd_re, line).groups()
