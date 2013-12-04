@@ -138,7 +138,7 @@ for ext in ext_modules:
 
 setup(
     name='cyflann',
-    version='0.1.14',
+    version='0.1.15-dev',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann', 'cyflann.tests'],
