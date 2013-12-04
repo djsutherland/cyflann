@@ -85,13 +85,17 @@ def get_pkg_info(name):
 
 if os.environ.get('FLANN_DIR', False):
     pre = partial(os.path.join, os.environ['FLANN_DIR'])
+    lib_dirs = [pre('lib')]
+    if os.path.isdir(pre('lib64')) and sys.maxsize > 2**32:
+        lib_dirs.append(pre('lib64'))
+
     flann_info = {
         'libraries': ['flann', 'flann_cpp'],
         'include_dirs': [pre('include')],
-        'library_dirs': [pre('lib')],
+        'library_dirs': lib_dirs,
         'extra_compile_args': [],
         'extra_link_args': [],
-        'runtime_library_dirs': [pre('lib')],
+        'runtime_library_dirs': lib_dirs,
     }
 else:
     flann_info = get_pkg_info('flann')
