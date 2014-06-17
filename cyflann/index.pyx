@@ -108,7 +108,9 @@ cdef class FLANNParameters:
         except AttributeError as e:
             raise KeyError(*e.args)
 
-    def update(self, **kwargs):
+    def update(self, dict={}, **kwargs):
+        for k, v in dict.iteritems():
+            setattr(self, k, v)
         for k, v in kwargs.iteritems():
             setattr(self, k, v)
 
