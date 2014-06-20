@@ -28,7 +28,8 @@ def get_flann_lib():
     so_name = index.__file__
 
     if sys.platform == 'darwin':
-        out = subprocess.check_output(['otool', '-L', so_name]).split('\n')
+        out = subprocess.check_output(['otool', '-L', so_name]).encode()
+        out = out.split('\n')
         assert out.pop(0) == so_name + ':'
         for line in out:
             assert line[0] == '\t'
@@ -54,7 +55,7 @@ def get_flann_lib():
                 _flann_lib = os.path.abspath(fname)
                 return _flann_lib
     elif sys.platform.startswith('linux'):
-        out = subprocess.check_output(['ldd', so_name]).split('\n')
+        out = subprocess.check_output(['ldd', so_name]).encode().split('\n')
         for line in out:
             shortname, path = re.match(_ldd_re, line).groups()
             if 'libflann' in shortname and 'libflann_cpp' not in shortname:
