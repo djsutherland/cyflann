@@ -11,7 +11,7 @@ also has some known issues, and is probably less friendly in general than it
 could be. If you want to use it, bug reports and/or pull requests are welcome.
 
 
-Requirements
+Installation
 ------------
 
 If you use the `Anaconda <https://store.continuum.io/cshop/anaconda/>`_ Python
@@ -19,12 +19,14 @@ distribution, the easiest way to get both cyflann and FLANN is::
 
    conda install -c http://conda.binstar.org/dougal cyflann
 
-Otherwise, you need to install FLANN yourself.
-If you're using 1.8.4 or earlier (the most recent release as of June 2014),
-a problem with its pkg-config files means that cyflann won't link properly.
+Otherwise, you need to install FLANN yourself, and can then run::
+
+   pip install cyflann
+
+If you're using FLANN 1.8.4 or earlier (the most recent release), a problem
+with its pkg-config files means that cyflann won't link properly.
 This has been fixed in the development branch since April 2013, but there
 hasn't been an official release since then.
-
 To work around this problem, set the environment variable ``FLANN_DIR`` to the
 root of the installation before running ``pip`` or ``setup.py``, e.g.
 ``/usr/local`` if the libraries are in ``/usr/local/lib/libflann.so``.
