@@ -1,4 +1,6 @@
 from copy import copy
+import os
+import tempfile
 
 cimport cython
 
@@ -315,8 +317,24 @@ cdef class FLANNIndex:
             filename, &pts[0, 0], pts.shape[0], pts.shape[1])
         self._data = pts
 
-    def __getstate__(self):
-        raise TypeError("cyflann objects are currently not pickleable")
+    def __reduce__(self):
+        fname = tempfile.NamedTemporaryFile(delete=False).name
+        try:
+            self.save_index(fname)
+            with open(fname, 'rb') as f:
+                return FLANNIndex, (), (f.read(), self.data)
+        finally:
+            os.remove(fname)
+
+    def __setstate__(self, state):
+        idx, data = state
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            fname = f.name
+            f.write(idx)
+        try:
+            self.load_index(fname, data)
+        finally:
+            os.remove(fname)
 
     ############################################################################
     ### Main NN search functions
