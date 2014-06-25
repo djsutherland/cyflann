@@ -332,7 +332,7 @@ cdef class FLANNIndex:
             fname = f.name
             f.write(idx)
         try:
-            self.load_index(fname, data)
+            self.load_index(fname.encode(), data)
         finally:
             os.remove(fname)
 
