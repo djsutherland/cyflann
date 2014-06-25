@@ -320,7 +320,7 @@ cdef class FLANNIndex:
     def __reduce__(self):
         fname = tempfile.NamedTemporaryFile(delete=False).name
         try:
-            self.save_index(fname)
+            self.save_index(fname.encode())
             with open(fname, 'rb') as f:
                 return FLANNIndex, (), (f.read(), self.data)
         finally:
