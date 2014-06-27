@@ -256,8 +256,6 @@ cdef class FLANNIndex:
 
     def __init__(self, **kwargs):
         self.params.update(**kwargs)
-        self._rn_gen = np.random.RandomState()
-        self._rn_gen.seed()
 
     def free_index(self):
         self._free_index()
@@ -284,7 +282,7 @@ cdef class FLANNIndex:
 
     cdef _ensure_random_seed(self, kwargs):
         if 'random_seed' not in kwargs:
-            kwargs['random_seed'] = self._rn_gen.randint(2 ** 30)
+            kwargs['random_seed'] = np.random.randint(2 ** 30)
 
     cpdef _check_array(self, array, int dim=2):
         array = np.require(array,
