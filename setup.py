@@ -14,9 +14,11 @@ except ImportError as e:
 try:
     from setuptools import setup
     from setuptools.extension import Extension
+    from setuptools.command.build_ext import build_ext
 except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
+    from distutils.command.build_ext import build_ext
 
 ################################################################################
 # The following chunk of code for querying pkg-config is loosely based on code
@@ -100,21 +102,34 @@ if os.environ.get('FLANN_DIR', False):
 else:
     flann_info = get_pkg_info('flann')
 
-if sys.platform == 'darwin':
-    # OSX rpath support is weird and stupid; just use an absolute path instead
-    ld = flann_info['library_dirs']
-    rld = flann_info['runtime_library_dirs']
+class FLANNExtension(Extension):
+    pass
 
-    if len(ld) == 1 and rld == ld:
-        del flann_info['runtime_library_dirs'], flann_info['library_dirs']
-        flann_info['libraries'] = [
-            os.path.join(ld[0], lib) for lib in flann_info['libraries']]
-    elif not ld and not rld:
-        pass
-    else:
-        import warnings
-        msg = "Something unexpected is going on here. Good luck!"
-        warnings.warn(msg)
+class build_ext_flann(build_ext):
+    def build_extension(self, ext):
+        build_ext.build_extension(self, ext)
+
+        if isinstance(ext, FLANNExtension) and sys.platform == 'darwin':
+            ld = flann_info['library_dirs']
+            rld = flann_info['runtime_library_dirs']
+
+            print(ld, rld, flann_info)
+
+            if not ld and not rld:
+                return
+            elif len(ld) != 1 or ld != rld:
+                import warnings
+                msg = "Something unexpected is going on here. Good luck!"
+                warnings.warn(msg)
+                return
+
+            ext_name = self.get_ext_fullpath(ext.name)
+            for libname in flann_info['libraries']:
+                lib = 'lib{}.dylib'.format(libname)
+                args = ['/usr/bin/install_name_tool', '-change',
+                        lib, os.path.join(ld[0], lib), ext_name]
+                print(' '.join(args))
+                subprocess.check_call(args)
 
 
 ################################################################################
@@ -127,10 +142,13 @@ except ImportError:
         msg = "index extension needs to be compiled but cython isn't available"
         raise ImportError(msg)
     ext_modules = [
-        Extension("cyflann.index", ["cyflann/index.c"]),
+        FLANNExtension("cyflann.index", ["cyflann/index.c"]),
     ]
 else:
-    ext_modules = cythonize("cyflann/*.pyx", "cyflann/*.pdx")
+    ext_modules = cythonize([
+        FLANNExtension("cyflann.index", ["cyflann/index.pyx"],
+                       depends=["cyflann/index.pxd", "cyflann/flann.pxd"])
+    ])
 
 for ext in ext_modules:
     ext.__dict__.update(flann_info)
@@ -150,6 +168,7 @@ setup(
     license='BSD 3-clause',
     include_dirs=[numpy.get_include()],
     ext_modules=ext_modules,
+    cmdclass={'build_ext': build_ext_flann},
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
