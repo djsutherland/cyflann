@@ -8,8 +8,10 @@ try:
 except ImportError:
     pass
 
+import re
+
 _flann_lib = None
-_ldd_re = r'^\t([^\s]+) => (.*) \(0x[\da-f]+\)$'
+_ldd_re = re.compile(r'^\t([^\s]+)(?: => (.*))? \(0x[\da-f]+\)$')
 def get_flann_lib():
     '''
     Gets the location of the flann library that users should link against.
@@ -21,7 +23,6 @@ def get_flann_lib():
         return _flann_lib
 
     import os
-    import re
     import subprocess
     import sys
 
@@ -57,10 +58,16 @@ def get_flann_lib():
     elif sys.platform.startswith('linux'):
         out = subprocess.check_output(['ldd', so_name]).decode().split('\n')
         for line in out:
-            shortname, path = re.match(_ldd_re, line).groups()
+            match = _ldd_re.match(line)
+            if not match:
+                import warnings
+                warnings.warn("Confused by ldd output line: {}".format(line))
+                continue
+            shortname, path = match.groups()
             if 'libflann' in shortname and 'libflann_cpp' not in shortname:
-                _flann_lib = os.path.abspath(path)
-                return _flann_lib
+                if path:
+                    _flann_lib = os.path.abspath(path)
+                    return _flann_lib
     else:
         raise OSError("get_flann_lib doesn't know how to handle this OS")
 
