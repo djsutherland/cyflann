@@ -156,7 +156,7 @@ for ext in ext_modules:
 
 setup(
     name='cyflann',
-    version='0.1.21-dev',
+    version='0.1.21',
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann', 'cyflann.tests'],
