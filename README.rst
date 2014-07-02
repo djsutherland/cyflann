@@ -62,7 +62,7 @@ cyflann wants ``FLANN_DIR=/usr``.
 
 **From source:**
 Download `the release source <http://www.cs.ubc.ca/research/flann/#download>`_
-or get the latest version `from github <https://github.com/mariusmuja/flann/`_
+or get the latest version `from github <https://github.com/mariusmuja/flann/>`_
 (it's generally pretty stable),
 and follow the `user manual <http://www.cs.ubc.ca/research/flann/uploads/FLANN/flann_manual-1.8.4.pdf>`_ to install.
 If you're installing the development branch and have ``pkg-config`` available,
