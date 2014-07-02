@@ -113,8 +113,6 @@ class build_ext_flann(build_ext):
             ld = flann_info['library_dirs']
             rld = flann_info['runtime_library_dirs']
 
-            print(ld, rld, flann_info)
-
             if not ld and not rld:
                 return
             elif len(ld) != 1 or ld != rld:

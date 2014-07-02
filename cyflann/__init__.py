@@ -8,6 +8,10 @@ try:
 except ImportError:
     pass
 
+
+################################################################################
+### Helpers for consumers to find libflann
+
 import re
 
 _flann_lib = None
@@ -42,7 +46,7 @@ def get_flann_lib():
                     # look for it in the standard places...
                     dirs = ['/usr/local/lib', '/usr/lib', '/lib']
                     if 'LIBRARY_PATH' in os.environ:
-                        dirs = os.environ.split(':') + dirs
+                        dirs = os.environ['LIBRARY_PATH'].split(':') + dirs
 
                     from distutils.unixccompiler import UnixCCompiler
                     assert fname.startswith('lib')
