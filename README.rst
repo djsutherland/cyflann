@@ -46,7 +46,7 @@ Installing FLANN
 **Anaconda:** ``conda install -c http://conda.binstar.org/dougal flann``
 (included as a requirement by the cyflann package).
 
-**OSX:** ``brew install homebrew/science/flann``; set ``FLANN_DIR=$(brew --prefix)``.
+**OSX:** using `Homebrew <http://brew.sh>`_, ``brew install homebrew/science/flann``; set ``FLANN_DIR=$(brew --prefix)``.
 
 **Ubuntu:** ``apt-get install libflann1 flann-dev``; set ``FLANN_DIR=/usr``.
 
