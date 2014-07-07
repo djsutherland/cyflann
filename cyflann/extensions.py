@@ -42,9 +42,9 @@ class build_ext_flann(build_ext):
         if isinstance(ext, FLANNExtension) and sys.platform == 'darwin':
             # if flann is installed with a bad install_name (e.g. conda)
             ext_name = self.get_ext_fullpath(ext.name)
-            lib = get_flann_lib()
-            libname = os.path.basename(get_flann_lib())
-            args = ['/usr/bin/install_name_tool',
-                    '-change', libname, lib, ext_name]
-            print(' '.join(args))
-            subprocess.check_call(args)
+            libdir, libname = os.path.split(get_flann_lib())
+            for lib in [libname, 'libflann.dylib', 'libflann_cpp.dylib']:
+                args = ['/usr/bin/install_name_tool',
+                        '-change', lib, os.path.join(libdir, lib), ext_name]
+                print(' '.join(args))
+                subprocess.check_call(args)
