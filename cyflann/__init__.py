@@ -94,3 +94,7 @@ def get_flann_include():
     import os
     return os.path.abspath(os.path.join(os.path.dirname(get_flann_lib()),
                                         '../include'))
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

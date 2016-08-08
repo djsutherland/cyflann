@@ -4,6 +4,8 @@ import os
 import subprocess
 import sys
 
+import versioneer
+
 try:
     import numpy
 except ImportError as e:
@@ -151,10 +153,13 @@ else:
 for ext in ext_modules:
     ext.__dict__.update(flann_info)
 
+cmdclass = versioneer.get_cmdclass()
+assert 'build_ext' not in cmdclass
+cmdclass['build_ext'] = build_ext_flann
 
 setup(
     name='cyflann',
-    version='0.1.24-dev',
+    version=versioneer.get_version(),
     author='Dougal J. Sutherland',
     author_email='dougal@gmail.com',
     packages=['cyflann', 'cyflann.tests'],
@@ -166,7 +171,7 @@ setup(
     license='BSD 3-clause',
     include_dirs=[numpy.get_include()],
     ext_modules=ext_modules,
-    cmdclass={'build_ext': build_ext_flann},
+    cmdclass=cmdclass,
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
