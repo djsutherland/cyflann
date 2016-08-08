@@ -27,19 +27,30 @@ def get_flann_lib():
         return _flann_lib
 
     import os
-    import subprocess
+    import re
+    from subprocess import check_output
     import sys
 
     so_name = index.__file__
 
     if sys.platform == 'darwin':
-        out = subprocess.check_output(['otool', '-L', so_name]).decode()
-        out = out.split('\n')
+        # this is gross. it'd be better to not have to do all this.
+        out = check_output(['otool', '-L', so_name]).decode().splitlines()
         assert out.pop(0) == so_name + ':'
         for line in out:
             assert line[0] == '\t'
             fname = line.split(None, 1)[0]
             if 'libflann' in fname and 'libflann_cpp' not in fname:
+                if fname.startswith('@rpath'):
+                    o = check_output(['otool', '-l', so_name]).decode()
+                    i = o.index('cmd LC_RPATH')
+                    lines = o[i:].splitlines()
+                    assert lines[0].strip() == 'cmd LC_RPATH'
+                    assert re.match(r'cmdsize \d+$', lines[1].strip())
+                    m = re.match(r'path (.*) \(offset \d+\)$', lines[2].strip())
+                    assert m
+                    fname = fname.replace('@rpath', m.group(1))
+
                 fname = fname.replace('@loader_path', os.path.dirname(so_name))
                 if '/' not in fname:
                     # relative install_names, dammit
@@ -60,7 +71,7 @@ def get_flann_lib():
                 _flann_lib = os.path.abspath(fname)
                 return _flann_lib
     elif sys.platform.startswith('linux'):
-        out = subprocess.check_output(['ldd', so_name]).decode().split('\n')
+        out = check_output(['ldd', so_name]).decode().splitlines()
         for line in out:
             match = _ldd_re.match(line)
             if not match:
