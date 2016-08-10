@@ -10,7 +10,7 @@ The interface is currently incomplete; right now only float32 is supported, it
 also has some known issues, and is probably less friendly in general than it
 could be. If you want to use it, bug reports and/or pull requests are welcome.
 
-cyflann is only tested with FLANN 1.8.4 and git master.
+cyflann is only tested with FLANNs since 1.8.4.
 cyflann supports FLANN's OpenMP wrappers, but has not been tested with its
 MPI or CUDA interfaces.
 
@@ -27,7 +27,7 @@ Otherwise, you need to install FLANN yourself, and can then run::
 
    pip install cyflann
 
-If you're using FLANN 1.8.4 or earlier, a problem
+**NOTE:** If you're using FLANN 1.8.4 or earlier, a problem
 with its pkg-config files means that cyflann won't link properly.
 This has been fixed in the development branch since April 2013, but the
 1.9.1 release isn't yet widely packaged.

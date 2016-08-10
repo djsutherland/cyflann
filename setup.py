@@ -103,6 +103,14 @@ if os.environ.get('FLANN_DIR', False):
     }
 else:
     flann_info = get_pkg_info('flann')
+    if flann_info['libraries'] == ['flann_cpp']:
+        import warnings
+        warnings.warn("It looks like you're using an old version of FLANN "
+                      "with a bug in its pkg-config settings. Trying to "
+                      "work around this, but you'd be better off setting "
+                      "FLANN_DIR as described in the README, or updating to "
+                      "FLANN 1.9 or higher.")
+        flann_info['libraries'].insert(0, 'flann')
 
 class FLANNExtension(Extension):
     pass
