@@ -103,6 +103,9 @@ if os.environ.get('FLANN_DIR', False):
     }
 else:
     flann_info = get_pkg_info('flann')
+    flann_info['libraries'] += ['flann']
+
+flann_info['include_dirs'] += [numpy.get_include()]
 
 class FLANNExtension(Extension):
     pass
