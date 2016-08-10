@@ -21,16 +21,16 @@ Installation
 If you use the `Anaconda <https://store.continuum.io/cshop/anaconda/>`_ Python
 distribution, the easiest way to get both cyflann and FLANN is::
 
-   conda install -c http://conda.binstar.org/dougal cyflann
+   conda install -c dougal cyflann
 
 Otherwise, you need to install FLANN yourself, and can then run::
 
    pip install cyflann
 
-If you're using FLANN 1.8.4 or earlier (the most recent release), a problem
+If you're using FLANN 1.8.4 or earlier, a problem
 with its pkg-config files means that cyflann won't link properly.
-This has been fixed in the development branch since April 2013, but there
-hasn't been an official release since then.
+This has been fixed in the development branch since April 2013, but the
+1.9.1 release isn't yet widely packaged.
 
 To work around this problem, set the environment variable ``FLANN_DIR`` to the
 root of the installation before running ``pip`` or ``setup.py``, e.g.
@@ -43,8 +43,7 @@ environment variables by default;
 Installing FLANN
 ----------------
 
-**Anaconda:** ``conda install -c http://conda.binstar.org/dougal flann``
-(included as a requirement by the cyflann package).
+**Anaconda:** ``conda install -c dougal flann`` (included as a requirement by the cyflann package).
 
 **OSX:** using `Homebrew <http://brew.sh>`_, ``brew install homebrew/science/flann``; set ``FLANN_DIR=$(brew --prefix)``.
 
@@ -61,7 +60,7 @@ Install the `AUR flann package <https://aur.archlinux.org/packages/flann/>`_;
 cyflann wants ``FLANN_DIR=/usr``.
 
 **From source:**
-Download `the release source <http://www.cs.ubc.ca/research/flann/#download>`_
+Download `the release source <https://github.com/mariusmuja/flann/releases>`_
 or get the latest version `from github <https://github.com/mariusmuja/flann/>`_
 (it's generally pretty stable),
 and follow the `user manual <http://www.cs.ubc.ca/research/flann/uploads/FLANN/flann_manual-1.8.4.pdf>`_ to install.
