@@ -152,6 +152,7 @@ else:
 
 for ext in ext_modules:
     ext.__dict__.update(flann_info)
+    ext.include_dirs.append(numpy.get_include())
 
 cmdclass = versioneer.get_cmdclass()
 assert 'build_ext' not in cmdclass
@@ -169,7 +170,6 @@ setup(
                 'library.',
     long_description=open('README.rst').read(),
     license='BSD 3-clause',
-    include_dirs=[numpy.get_include()],
     ext_modules=ext_modules,
     cmdclass=cmdclass,
     classifiers=[
