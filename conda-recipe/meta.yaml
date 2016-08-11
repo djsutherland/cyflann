@@ -1,0 +1,36 @@
+package:
+  name: cyflann
+
+source:
+  path: ..
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - numpy x.x
+    - flann >=1.9.1,<1.10
+    - cython
+
+  run:
+    - python
+    - numpy x.x
+    - flann >=1.9.1,<1.10
+
+test:
+  imports:
+    - cyflann
+
+  commands:
+    - nosetests --exe cyflann
+
+  requires:
+    - nose
+    - pyflann
+
+about:
+  home: https://github.com/dougalsutherland/cyflann
+  license: BSD License
