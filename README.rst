@@ -1,3 +1,11 @@
+|Travis|_
+
+.. |Travis| image:: https://api.travis-ci.org/dougalsutherland/cyflann.svg?branch=master
+.. _Travis: https://travis-ci.org/dougalsutherland/cyflann
+
+cyflann
+=======
+
 This is a Cython-based interface to the
 `FLANN <http://people.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN>`_ library.
 

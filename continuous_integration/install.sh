@@ -21,6 +21,6 @@ conda update --yes --quiet conda
 
 conda install --yes -c dougal \
     python=$PYTHON_VERSION pip nose setuptools cython \
-    numpy=$NUMPY_VERSION flann=FLANN_VERSION
+    numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
 
 python setup.py install
