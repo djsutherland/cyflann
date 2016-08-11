@@ -4,4 +4,4 @@ set -e
 
 cd $HOME # get out of source directory to avoid confusing nose
 
-nosetests --exe cyflann
+PKG_CONFIG_PATH=$HOME/miniconda/lib/pkgconfig nosetests --exe cyflann
