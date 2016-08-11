@@ -30,6 +30,7 @@ test:
   requires:
     - nose
     - pyflann
+    - cython
 
 about:
   home: https://github.com/dougalsutherland/cyflann
