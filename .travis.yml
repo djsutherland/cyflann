@@ -1,16 +1,38 @@
 language: c # work around travis issue on OSX
             # https://github.com/travis-ci/travis-ci/issues/2312
-os:
-  - linux
-  - osx
 compiler:
   - gcc
-env:
-  # TODO: 
-  matrix:
-    - PYTHON_VERSION="2.7" NUMPY_VERSION="1.11.1" FLANN_VERSION="1.8.4"
-    - PYTHON_VERSION="2.7" NUMPY_VERSION="1.11.1" FLANN_VERSION="1.9.1"
-    - PYTHON_VERSION="3.5" NUMPY_VERSION="1.11.1" FLANN_VERSION="1.8.4"
-    - PYTHON_VERSION="3.5" NUMPY_VERSION="1.11.1" FLANN_VERSION="1.9.1"
 install: source continuous_integration/install.sh
 script: bash continuous_integration/test.sh
+matrix:
+  include:
+    # linux entries:
+    - env: SYSTEM_PYTHON="1"
+      os: linux
+      sudo: true
+      dist: trusty
+      compiler: gcc
+    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.8.4"
+      os: linux
+      compiler: gcc
+    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+      os: linux
+      compiler: gcc
+    - env: PYTHON_VERSION="3.5" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+      os: linux
+      compiler: gcc
+    # OSX entries: the same, basically
+    - env: SYSTEM_PYTHON="1"
+      os: osx
+      compiler: gcc
+    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.8.4"
+      os: osx
+      compiler: gcc
+    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+      os: osx
+      compiler: gcc
+    - env: PYTHON_VERSION="3.5" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+      os: osx
+      compiler: gcc
+  exclude:
+    - compiler: gcc  # https://github.com/travis-ci/travis-ci/issues/4681

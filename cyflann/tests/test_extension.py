@@ -33,7 +33,7 @@ def do_test():
     k = 3
     cdef float[:, ::1] query = np.random.randn(n_query, dim).astype(np.float32)
     cdef int[:, ::1] idx_out = np.zeros((n_query, k), dtype=np.int32) - 1
-    cdef float[:, ::1] dists_out = np.zeros((n_query, k), dtype=np.float32) + np.nan
+    cdef float[:, ::1] dists_out = np.zeros((n_query, k), dtype=np.float32) - 1
 
     with nogil:
         flann_find_nearest_neighbors_index_float(
