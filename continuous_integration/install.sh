@@ -30,16 +30,16 @@ if [[ "$SYSTEM_PYTHON" ]]; then
     $sudo $python setup.py install
 
     # pyflann is needed for testing, and not easily packaged
-    v=1.8.4
-    wget https://github.com/mariusmuja/flann/archive/$v.tar.gz
-    tar xf $v.tar.gz
+    FLANN_VERSION=${$FLANN_VERSION:-1.9.1}
+    wget https://github.com/mariusmuja/flann/archive/$FLANN_VERSION.tar.gz
+    tar xf $FLANN_VERSION.tar.gz
     cd flann-$v/src/python
     cat <<EOF >setup.py
 #!/usr/bin/env python2
 from distutils.core import setup
 
 setup(name='flann',
-      version='1.8.4',
+      version='$FLANN_VERSION',
       description='Fast Library for Approximate Nearest Neighbors',
       author='Marius Muja',
       author_email='mariusm@cs.ubc.ca',
