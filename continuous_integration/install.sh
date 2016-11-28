@@ -30,10 +30,10 @@ if [[ "$SYSTEM_PYTHON" ]]; then
     $sudo $python setup.py install
 
     # pyflann is needed for testing, and not easily packaged
-    FLANN_VERSION=${$FLANN_VERSION:-1.9.1}
+    FLANN_VERSION=${FLANN_VERSION:-1.9.1}
     wget https://github.com/mariusmuja/flann/archive/$FLANN_VERSION.tar.gz
     tar xf $FLANN_VERSION.tar.gz
-    cd flann-$v/src/python
+    cd flann-$FLANN_VERSION/src/python
     cat <<EOF >setup.py
 #!/usr/bin/env python2
 from distutils.core import setup
