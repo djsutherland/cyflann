@@ -64,16 +64,17 @@ else
     fi
     chmod +x miniconda.sh
     ./miniconda.sh -b -p $HOME/miniconda
-    export PATH="$HOME/miniconda/bin:$PATH"
-    export PKG_CONFIG_PATH="$HOME/miniconda/lib/pkgconfig:$PKG_CONFIG_PATH"
-    export sudo=''
-    export python='python'
 
-    conda update --yes --quiet conda
-
-    conda install --yes -c dougal \
+    conda=$HOME/miniconda/bin/conda
+    $conda update --yes --quiet conda
+    $conda create --yes -c dougal -n env \
         python=$PYTHON_VERSION pip nose setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
 
-    python setup.py install
+    export PATH="$HOME/miniconda/envs/env/bin:$PATH"
+    export PKG_CONFIG_PATH="$HOME/miniconda/envs/env/lib/pkgconfig:$PKG_CONFIG_PATH"
+    export sudo=''
+    export python='python'
+
+    $python setup.py install
 fi
