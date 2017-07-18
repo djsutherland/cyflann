@@ -4,6 +4,11 @@ set -e
 
 os=$(uname)
 
+if [[ "$os" == "Darwin" ]]; then
+    rvm get stable
+    # hack around travis bug https://github.com/travis-ci/travis-ci/issues/6307
+fi
+
 if [[ "$SYSTEM_PYTHON" ]]; then
     if [[ "$os" == "Linux" ]]; then
         export sudo='sudo'
@@ -67,7 +72,7 @@ else
 
     conda=$HOME/miniconda/bin/conda
     $conda update --yes --quiet conda
-    $conda create --yes -c conda-forge -n env \
+    $conda create --yes -c conda-forge -c dougal -n env \
         python=$PYTHON_VERSION pip nose setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
 
