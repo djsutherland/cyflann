@@ -18,7 +18,7 @@ matrix:
     - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
       os: linux
       compiler: gcc
-    - env: PYTHON_VERSION="3.5" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+    - env: PYTHON_VERSION="3.6" NUMPY_VERSION="1.13" FLANN_VERSION="1.9.1"
       os: linux
       compiler: gcc
     # OSX entries: the same, basically
@@ -28,10 +28,10 @@ matrix:
     - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.8.4"
       os: osx
       compiler: gcc
-    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+    - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.13" FLANN_VERSION="1.9.1"
       os: osx
       compiler: gcc
-    - env: PYTHON_VERSION="3.5" NUMPY_VERSION="1.11" FLANN_VERSION="1.9.1"
+    - env: PYTHON_VERSION="3.6" NUMPY_VERSION="1.13" FLANN_VERSION="1.9.1"
       os: osx
       compiler: gcc
   exclude:
