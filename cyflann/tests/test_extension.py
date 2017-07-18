@@ -72,6 +72,11 @@ def test_extension():
         exts = cythonize(cyflann.FLANNExtension(
             'test', ['test.pyx'], include_dirs=[np.get_include()]))
 
+        if sys.platform == 'darwin':
+            import sysconfig
+            s = 'MACOSX_DEPLOYMENT_TARGET'
+            os.environ[s] = sysconfig.get_config_var(s)
+
         _setup(script_name='a_test',
                script_args=['build_ext', '--inplace'],
                ext_modules=exts)
