@@ -1,2 +1,3 @@
 include versioneer.py
 include cyflann/_version.py
+include LICENSE.txt
