@@ -22,6 +22,8 @@ cyflann is only tested with FLANNs since 1.8.4.
 cyflann supports FLANN's OpenMP wrappers, but has not been tested with its
 MPI or CUDA interfaces.
 
+It should work on Windows, but I haven't been able to get FLANN built there to test. If you care about that, consider helping to get a Windows build working in conda-forge (`PR <https://github.com/conda-forge/flann-feedstock/pull/1>`_).
+
 
 Installation
 ------------
@@ -29,9 +31,9 @@ Installation
 If you use the `Anaconda <https://store.continuum.io/cshop/anaconda/>`_ Python
 distribution, the easiest way to get both cyflann and FLANN is::
 
-   conda install -c dougal cyflann
+   conda install -c dougal -c conda-forge cyflann
 
-Otherwise, you need to install FLANN yourself, and can then run::
+Otherwise, you need to install FLANN yourself (see below), and can then run::
 
    pip install cyflann
 
@@ -51,9 +53,9 @@ environment variables by default;
 Installing FLANN
 ----------------
 
-**Anaconda:** ``conda install -c dougal flann`` (included as a requirement by the cyflann package).
+**Anaconda:** ``conda install -c conda-forge flann`` (included as a requirement by the cyflann package).
 
-**OSX:** using `Homebrew <http://brew.sh>`_, ``brew install homebrew/science/flann``; set ``FLANN_DIR=$(brew --prefix)``.
+**OSX:** using `Homebrew <http://brew.sh>`_, ``brew install homebrew/science/flann``; this gives you 1.9.1, but if ``pkg-config`` doesn't work for you for some reason, it's ``FLANN_DIR=$(brew --prefix)``.
 
 **Ubuntu:** ``apt-get install libflann1 flann-dev``; set ``FLANN_DIR=/usr``.
 
@@ -68,11 +70,9 @@ Install the `AUR flann package <https://aur.archlinux.org/packages/flann/>`_;
 cyflann wants ``FLANN_DIR=/usr``.
 
 **From source:**
-Download `the release source <https://github.com/mariusmuja/flann/releases>`_
-or get the latest version `from github <https://github.com/mariusmuja/flann/>`_
-(it's generally pretty stable),
+Download `the release source <https://github.com/mariusmuja/flann/releases>`_,
 and follow the `user manual <http://www.cs.ubc.ca/research/flann/uploads/FLANN/flann_manual-1.8.4.pdf>`_ to install.
-If you're installing the development branch and have ``pkg-config`` available,
+If you're installing 1.9.1 and have ``pkg-config`` available,
 you shouldn't need to set ``FLANN_DIR``,
 but if not set it to whatever you set ``CMAKE_INSTALL_PREFIX`` to
 (``/usr/local`` by default).
