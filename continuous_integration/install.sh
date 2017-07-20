@@ -72,7 +72,7 @@ else
 
     conda=$HOME/miniconda/bin/conda
     $conda update --yes --quiet conda
-    $conda create --yes -c conda-forge -c dougal -n env \
+    $conda create --yes -c conda-forge -n env \
         python=$PYTHON_VERSION pip nose setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
 
