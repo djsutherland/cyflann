@@ -1,13 +1,20 @@
-|Travis|_
+cyflann
+=======
+
+|Travis|_ |PyPI|_ |conda|_
 
 .. |Travis| image:: https://api.travis-ci.org/dougalsutherland/cyflann.svg?branch=master
 .. _Travis: https://travis-ci.org/dougalsutherland/cyflann
 
-cyflann
-=======
+.. |PyPI| image:: https://badge.fury.io/py/cyflann.svg
+.. _PyPI: https://badge.fury.io/cyflann/
 
-This is a Cython-based interface to the
+.. |conda| image:: https://anaconda.org/conda-forge/cyflann/badges/version.svg
+.. _conda: https://anaconda.org/conda-forge/cyflann
+
+`cyflann` is a Cython-based interface to the
 `FLANN <http://people.cs.ubc.ca/~mariusm/index.php/FLANN/FLANN>`_ library.
+It allows you to call FLANN from Cython without python overheads; in particular, you can make many calls in parallel threads without the GIL.
 
 If you're just looking for any Python interface to FLANN, the ctypes interface
 that it ships with may be better for you. I wrote this interface for
@@ -31,7 +38,7 @@ Installation
 If you use the `Anaconda <https://store.continuum.io/cshop/anaconda/>`_ Python
 distribution, the easiest way to get both cyflann and FLANN is::
 
-   conda install -c dougal -c conda-forge cyflann
+   conda install -c conda-forge cyflann
 
 Otherwise, you need to install FLANN yourself (see below), and can then run::
 
