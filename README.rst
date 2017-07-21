@@ -7,7 +7,7 @@ cyflann
 .. _Travis: https://travis-ci.org/dougalsutherland/cyflann
 
 .. |PyPI| image:: https://badge.fury.io/py/cyflann.svg
-.. _PyPI: https://badge.fury.io/cyflann/
+.. _PyPI: https://badge.fury.io/py/cyflann/
 
 .. |conda| image:: https://anaconda.org/conda-forge/cyflann/badges/version.svg
 .. _conda: https://anaconda.org/conda-forge/cyflann
