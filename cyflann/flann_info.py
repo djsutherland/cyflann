@@ -94,7 +94,7 @@ def get_flann_info(flann_dir=None, use_cache=True):
             'library_dirs': lib_dirs,
             'extra_compile_args': [],
             'extra_link_args': [],
-            'runtime_library_dirs': lib_dirs,
+            'runtime_library_dirs': lib_dirs if os.name != 'nt' else [],
         }
     else:
         _flann_info = get_pkg_info('flann')
