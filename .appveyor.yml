@@ -1,0 +1,32 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7"
+      FLANN_VERSION: "1.9.1"
+      NUMPY_VERSION: "1.11"
+      MINICONDA: "C:\\Miniconda"
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6"
+      FLANN_VERSION: "1.9.1"
+      NUMPY_VERSION: "1.14"
+      MINICONDA: "C:\\Miniconda36-x64"
+
+  install:
+    - cmd: rmdir C:\\cygwin /s /q
+
+    - cmd: call %MINICONDA%\\Scripts\\activate.bat
+    - cmd: conda update --yes --quiet conda
+    - cmd: conda config --add channels conda-forge
+
+    - cmd: conda create -n env python=%PYTHON_VERSION% pip nose setuptools cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
+    - cmd: conda activate env
+
+    - cmd: python -m pip install --ignore-installed .
+
+  build: off
+
+  test_script:
+    - mkdir empty_folder
+    - cd empty_folder
+    - python -m nose --exe cyflann
+    - cd ..

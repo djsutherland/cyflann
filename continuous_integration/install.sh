@@ -70,13 +70,13 @@ else
     chmod +x miniconda.sh
     ./miniconda.sh -b -p $HOME/miniconda
 
-    conda=$HOME/miniconda/bin/conda
-    $conda update --yes --quiet conda
-    $conda create --yes -c conda-forge -n env \
+    source $HOME/miniconda/etc/profile.d/conda.sh
+    conda update --yes --quiet conda
+    conda create --yes -c conda-forge -n env \
         python=$PYTHON_VERSION pip nose setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
+    conda activate env
 
-    export PATH="$HOME/miniconda/envs/env/bin:$PATH"
     export PKG_CONFIG_PATH="$HOME/miniconda/envs/env/lib/pkgconfig:$PKG_CONFIG_PATH"
     export sudo=''
     export python='python'
