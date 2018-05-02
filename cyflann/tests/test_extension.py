@@ -1,14 +1,10 @@
+from __future__ import print_function
+
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
-
-from Cython.Build import cythonize
-import numpy as np
-from setuptools import setup as _setup  # don't let nose run this...
-from setuptools.extension import Extension
-
-import cyflann
 
 extension = '''
 import numpy as np
@@ -59,6 +55,28 @@ def do_test():
     assert np.allclose(dists_out, nn_dists)
 '''
 
+setup_code = '''
+from Cython.Build import cythonize
+import numpy as np
+from setuptools import setup
+from setuptools.extension import Extension
+
+import cyflann
+
+exts = cythonize(cyflann.FLANNExtension(
+    'a_test', ['test.pyx'], include_dirs=[np.get_include()]))
+
+setup(name='a_test', ext_modules=exts)
+'''
+
+def call_out(args):
+    p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    while p.poll() is None:
+        print(p.stdout.readline().decode('utf-8'), end='')
+    print(p.stdout.read().decode('utf-8'), end='')
+    if p.returncode:
+        raise subprocess.CalledProcessError(p.returncode, args)
+
 
 def test_extension():
     tmpdir = tempfile.mkdtemp()
@@ -69,21 +87,16 @@ def test_extension():
         with open('test.pyx', 'w') as f:
             f.write(extension)
 
-        exts = cythonize(cyflann.FLANNExtension(
-            'test', ['test.pyx'], include_dirs=[np.get_include()]))
+        with open('setup.py', 'w') as f:
+            f.write(setup_code)
 
         if sys.platform == 'darwin':
             import sysconfig
             s = 'MACOSX_DEPLOYMENT_TARGET'
             os.environ[s] = sysconfig.get_config_var(s)
 
-        _setup(script_name='a_test',
-               script_args=['build_ext', '--inplace'],
-               ext_modules=exts)
-
-        sys.path.insert(0, tmpdir)
-        import test
-        test.do_test()
+        call_out([sys.executable, 'setup.py', 'build_ext', '--inplace'])
+        call_out([sys.executable, '-c', 'import a_test; a_test.do_test()'])
     finally:
         os.chdir(old_dir)
         shutil.rmtree(tmpdir)

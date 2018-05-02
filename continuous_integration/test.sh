@@ -2,6 +2,10 @@
 # the Travis "script" step: see http://docs.travis-ci.com/ and ../.travis.yml
 set -e
 
-cd $HOME # get out of source directory to avoid confusing nose
+# make sure we're importing from the right place
+mkdir empty_folder
+cd empty_folder
 
-$python -mnose --exe cyflann
+$python -m pytest --pyargs cyflann
+
+cd ..

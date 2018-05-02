@@ -14,8 +14,34 @@ from flann cimport (flann_index_t as index_t,
                     flann_distance_t as distance_t,
                     flann_log_level_t as log_level_t,
                     FLANNParameters as Parameters,
-                    DEFAULT_FLANN_PARAMETERS as DEFAULT_PARAMETERS,
+                    # DEFAULT_FLANN_PARAMETERS as DEFAULT_PARAMETERS,
                     flann_build_index_float as build_index_float)
+
+# XXX This is defined in the flann library. But for some reason, MSVC just
+#     really doesn't want to link against it. So redefine it here.
+DEFAULT_PARAMETERS = Parameters(
+    algorithm=flann.FLANN_INDEX_KDTREE,
+    checks=32,
+    eps=0.0,
+    sorted=0,
+    max_neighbors=-1,
+    cores=0,
+    trees=4,
+    leaf_max_size=4,
+    branching=32,
+    iterations=11,
+    centers_init=flann.FLANN_CENTERS_RANDOM,
+    cb_index=0.2,
+    target_precision=0.9,
+    build_weight=0.01,
+    memory_weight=0,
+    sample_fraction=0.1,
+    table_number_=0,
+    key_size_=0,
+    multi_probe_level_=0,
+    log_level=flann.FLANN_LOG_NONE,
+    random_seed=0,
+)
 
 ################################################################################
 ### Enum conversions

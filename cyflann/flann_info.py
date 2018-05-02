@@ -82,6 +82,14 @@ def get_flann_info(flann_dir=None, use_cache=True):
     if flann_dir is None:
         flann_dir = os.environ.get('FLANN_DIR')
 
+    if flann_dir is None:
+        pth = os.path.join(os.path.dirname(__file__), 'flann_dir.txt')
+        try:
+            with open(pth, 'r') as f:
+                flann_dir = f.read().strip()
+        except IOError:
+            pass
+
     if flann_dir:
         pre = partial(os.path.join, flann_dir)
         lib_dirs = [pre('lib')]
@@ -106,5 +114,14 @@ def get_flann_info(flann_dir=None, use_cache=True):
                           "FLANN_DIR as described in the README, or updating "
                           "to FLANN 1.9 or higher.")
             _flann_info['libraries'].insert(0, 'flann')
+
+    if os.name == 'nt':
+        _flann_info['runtime_library_dirs'] = []
+        if "CYFLANN_USE_STATIC" in os.environ:
+            _flann_info['libraries'] = [
+                l + '_s' for l in _flann_info['libraries']]
+        else:
+            # flann_cpp.lib doesn't exist for some reason
+            _flann_info['libraries'].remove('flann_cpp')
 
     return _flann_info

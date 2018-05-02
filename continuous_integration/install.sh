@@ -1,30 +1,31 @@
 #!/bin/bash
 # the Travis "install" step: see http://docs.travis-ci.com/ and ../.travis.yml
-set -e
 
 os=$(uname)
-
 if [[ "$os" == "Darwin" ]]; then
-    rvm get stable
-    # hack around travis bug https://github.com/travis-ci/travis-ci/issues/6307
+    __rvm_unload
 fi
+
+set -ex
+
 
 if [[ "$SYSTEM_PYTHON" ]]; then
     if [[ "$os" == "Linux" ]]; then
         export sudo='sudo'
         export python='/usr/bin/python'
-        sudo apt-get install libflann-dev python-{pip,setuptools,numpy,nose}
+        sudo apt-get install libflann-dev python-{pip,setuptools,numpy,pytest}
         sudo pip install cython
         export FLANN_DIR=/usr
     elif [[ "$os" == "Darwin" ]]; then
         export sudo=''
-        export python='/usr/local/bin/python'
+        export python='/usr/local/bin/python3'
 
-        brew update
-        brew install python homebrew/science/flann
-        pip install -U pip setuptools
-        pip install -U nose cython
-        brew install homebrew/python/numpy
+        rm -f /usr/local/include/c++  # stupid oclint pre-installed
+        echo "brew 'flann'" > Brewfile
+        echo "brew 'python'" >> Brewfile
+        brew update && brew bundle
+        $python -m pip install -U pip setuptools
+        $python -m pip install -U cython numpy pytest
 
         export FLANN_DIR=$(brew --prefix)
     else
@@ -70,13 +71,13 @@ else
     chmod +x miniconda.sh
     ./miniconda.sh -b -p $HOME/miniconda
 
-    conda=$HOME/miniconda/bin/conda
-    $conda update --yes --quiet conda
-    $conda create --yes -c conda-forge -n env \
-        python=$PYTHON_VERSION pip nose setuptools cython \
+    source $HOME/miniconda/etc/profile.d/conda.sh
+    conda update --yes --quiet conda
+    conda create --yes -c conda-forge -n env \
+        python=$PYTHON_VERSION pip pytest setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
+    conda activate env
 
-    export PATH="$HOME/miniconda/envs/env/bin:$PATH"
     export PKG_CONFIG_PATH="$HOME/miniconda/envs/env/lib/pkgconfig:$PKG_CONFIG_PATH"
     export sudo=''
     export python='python'
