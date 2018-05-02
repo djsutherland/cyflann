@@ -16,10 +16,9 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export python='/usr/local/bin/python'
 
         brew update
-        brew install python homebrew/science/flann
+        brew install python@2 flann numpy
         pip install -U pip setuptools
         pip install -U nose cython
-        brew install homebrew/python/numpy
 
         export FLANN_DIR=$(brew --prefix)
     else
