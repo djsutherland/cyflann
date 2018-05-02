@@ -84,21 +84,20 @@ def get_flann_info(flann_dir=None, use_cache=True):
 
     if flann_dir:
         pre = partial(os.path.join, flann_dir)
-        if os.name == 'nt':
-            lib_dirs = [pre('bin')]  # we want flann.dll
-        else:
-            lib_dirs = [pre('lib')]
-            if os.path.isdir(pre('lib64')) and sys.maxsize > 2**32:
-                lib_dirs.append(pre('lib64'))
+        lib_dirs = [pre('lib')]
+        if os.path.isdir(pre('lib64')) and sys.maxsize > 2**32:
+            lib_dirs.append(pre('lib64'))
 
         _flann_info = {
-            'libraries': ['flann', 'flann_cpp'],
+            'libraries': ['flann'],
             'include_dirs': [pre('include')],
             'library_dirs': lib_dirs,
             'extra_compile_args': [],
             'extra_link_args': [],
             'runtime_library_dirs': lib_dirs if os.name != 'nt' else [],
         }
+        if os.name != 'nt':
+            _flann_info['libraries'].append('flann_cpp')
     else:
         _flann_info = get_pkg_info('flann')
         if _flann_info['libraries'] == ['flann_cpp']:
