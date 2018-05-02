@@ -19,10 +19,9 @@ install:
   - cmd: conda update --yes --quiet conda
   - cmd: conda config --add channels conda-forge
 
-  - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% pytest setuptools wheel cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
+  - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% pytest setuptools wheel cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann m2w64-pkg-config
   - cmd: conda activate env
 
-  - cmd: 'set "FLANN_DIR=%MINICONDA%\envs\env\Library"'
   - cmd: python setup.py flann_info install
 
 build: off

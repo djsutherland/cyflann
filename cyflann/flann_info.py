@@ -104,9 +104,6 @@ def get_flann_info(flann_dir=None, use_cache=True):
             'extra_link_args': [],
             'runtime_library_dirs': lib_dirs,
         }
-        if os.name == 'nt':
-            _flann_info['libraries'].remove('flann_cpp')
-            _flann_info['runtime_library_dirs'] = []
     else:
         _flann_info = get_pkg_info('flann')
         if _flann_info['libraries'] == ['flann_cpp']:
@@ -117,5 +114,10 @@ def get_flann_info(flann_dir=None, use_cache=True):
                           "FLANN_DIR as described in the README, or updating "
                           "to FLANN 1.9 or higher.")
             _flann_info['libraries'].insert(0, 'flann')
+
+    if os.name == 'nt':
+        # flann_cpp.lib doesn't exist for some reason
+        _flann_info['libraries'].remove('flann_cpp')
+        _flann_info['runtime_library_dirs'] = []
 
     return _flann_info
