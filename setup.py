@@ -15,13 +15,31 @@ except ImportError as e:
     # friends get too eager about updating numpy.
 
 try:
-    from setuptools import setup
+    from setuptools import setup, Command
     from setuptools.extension import Extension
     from setuptools.command.build_ext import build_ext
+    from pprint import pprint
+
+    class PrintInfoCommand(Command):
+        user_options = []
+
+        def initialize_options(self):
+            pass
+
+        def finalize_options(self):
+            pass
+
+        def run(self):
+            global flann_info
+            pprint(flann_info)
+
 except ImportError:
     from distutils.core import setup
     from distutils.extension import Extension
     from distutils.command.build_ext import build_ext
+
+    class PrintInfoCommand():
+        pass
 
 # A hack, following sklearn: set a global variable so that cyflann.__init__
 # knows not to try to import compiled extensions that aren't built yet during
@@ -51,6 +69,8 @@ for ext in ext_modules:
     ext.__dict__.update(flann_info)
     ext.include_dirs.append(numpy.get_include())
 
+cmdclass = versioneer.get_cmdclass()
+cmdclass['flann_info'] = PrintInfoCommand
 
 setup(
     name='cyflann',
@@ -65,7 +85,7 @@ setup(
     long_description=open('README.rst').read(),
     license='BSD 3-clause',
     ext_modules=ext_modules,
-    cmdclass=versioneer.get_cmdclass(),
+    cmdclass=cmdclass,
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Science/Research",
