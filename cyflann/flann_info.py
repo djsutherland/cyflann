@@ -1,5 +1,6 @@
 import errno
 from functools import partial
+import json
 import os
 import subprocess
 
@@ -81,6 +82,16 @@ def get_flann_info(flann_dir=None, use_cache=True):
 
     if flann_dir is None:
         flann_dir = os.environ.get('FLANN_DIR')
+
+    if flann_dir is None:
+        pth = os.path.join(os.path.dirname(__file__), 'flann_config.json')
+        try:
+            with open(pth, 'r') as f:
+                meta = json.load(f)
+        except IOError:
+            pass
+        else:
+            flann_dir = meta.get('FLANN_DIR')
 
     if flann_dir:
         pre = partial(os.path.join, flann_dir)
