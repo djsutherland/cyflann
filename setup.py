@@ -71,7 +71,7 @@ for ext in ext_modules:
     ext.include_dirs.append(numpy.get_include())
 
 # XXX
-if os.name == 'nt':
+if os.name == 'nt' and 'CYFLANN_USE_STATIC' not in os.environ:
     for ext in ext_modules:
         ext.extra_link_args.append('/VERBOSE')
 
