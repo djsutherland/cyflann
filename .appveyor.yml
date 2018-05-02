@@ -32,6 +32,7 @@ install:
   - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% pytest setuptools wheel cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann m2w64-pkg-config
   - cmd: conda activate env
 
+  - cmd: set "FLANN_DIR=%CONDA_PREFIX%"
   - cmd: python setup.py flann_info install
 
 build: off
