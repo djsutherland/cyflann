@@ -24,7 +24,7 @@ install:
 
   - cmd: 'set "FLANN_DIR=%MINICONDA%\envs\env\Library"'
   
-  - cmd: DUMPBIN /SYMBOLS %FLANN_DIR%\lib\flann.lib
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\dumpbin" /SYMBOLS %FLANN_DIR%\lib\flann.lib'
 
   - cmd: python setup.py flann_info bdist_wheel
   - cmd: pip install --pre --no-index --find-links dist cyflann
