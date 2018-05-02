@@ -17,7 +17,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
 
         brew update
         brew unlink python
-        brew install python@2 flann numpy
+        brew install --overwrite python@2 flann numpy
         pip install -U pip setuptools
         pip install -U nose cython
 
