@@ -72,8 +72,8 @@ setup(name='a_test', ext_modules=exts)
 def call_out(args):
     p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     while p.poll() is None:
-        print(p.stdout.readline().decode(), end='')
-    print(p.stdout.read().decode(), end='')
+        print(p.stdout.readline().decode('utf-8'), end='')
+    print(p.stdout.read().decode('utf-8'), end='')
     if p.returncode:
         raise subprocess.CalledProcessError(p.returncode, args)
 
