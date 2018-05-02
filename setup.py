@@ -1,3 +1,4 @@
+from copy import deepcopy
 import os
 import sys
 import versioneer
@@ -66,7 +67,7 @@ else:
     ])
 
 for ext in ext_modules:
-    ext.__dict__.update(flann_info)
+    ext.__dict__.update(deepcopy(flann_info))
     ext.include_dirs.append(numpy.get_include())
 
 cmdclass = versioneer.get_cmdclass()
