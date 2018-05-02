@@ -1,6 +1,6 @@
 #!/bin/bash
 # the Travis "install" step: see http://docs.travis-ci.com/ and ../.travis.yml
-set -e
+set -ex
 
 os=$(uname)
 
