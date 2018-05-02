@@ -8,16 +8,6 @@ environment:
       FLANN_VERSION: "1.9.1"
       NUMPY_VERSION: "1.14"
       MINICONDA: "C:\\Miniconda36-x64"
-    - PYTHON_VERSION: "2.7"
-      FLANN_VERSION: "1.9.1"
-      NUMPY_VERSION: "1.11"
-      MINICONDA: "C:\\Miniconda36-x64"
-      CYFLANN_USE_STATIC: 1
-    - PYTHON_VERSION: "3.6"
-      FLANN_VERSION: "1.9.1"
-      NUMPY_VERSION: "1.14"
-      MINICONDA: "C:\\Miniconda36-x64"
-      CYFLANN_USE_STATIC: 1
 
 platform:
   - x64
