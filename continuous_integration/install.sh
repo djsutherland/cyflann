@@ -16,6 +16,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export python='/usr/local/bin/python'
 
         brew update
+        brew unlink python
         brew install python@2 flann numpy
         pip install -U pip setuptools
         pip install -U nose cython
