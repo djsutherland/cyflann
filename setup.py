@@ -70,6 +70,11 @@ for ext in ext_modules:
     ext.__dict__.update(deepcopy(flann_info))
     ext.include_dirs.append(numpy.get_include())
 
+# XXX
+if os.name == 'nt':
+    for ext in ext_modules:
+        ext.extra_link_args.append('/VERBOSE')
+
 cmdclass = versioneer.get_cmdclass()
 cmdclass['flann_info'] = PrintInfoCommand
 

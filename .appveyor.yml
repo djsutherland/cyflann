@@ -33,6 +33,7 @@ install:
   - cmd: conda activate env
 
   - cmd: set "FLANN_DIR=%CONDA_PREFIX%\Library"
+  - cmd: '"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\dumpbin" /exports %FLANN_DIR%\lib\flann.lib'
   - cmd: python setup.py flann_info install
 
 build: off
