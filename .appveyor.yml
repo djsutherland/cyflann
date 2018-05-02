@@ -19,7 +19,7 @@ install:
   - cmd: conda update --yes --quiet conda
   - cmd: conda config --add channels conda-forge
 
-  - cmd: conda create -n env python=%PYTHON_VERSION% pip nose setuptools cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
+  - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% pip nose setuptools cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
   - cmd: conda activate env
 
   - cmd: python -m pip install --ignore-installed .
