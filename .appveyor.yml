@@ -23,6 +23,9 @@ install:
   - cmd: conda activate env
 
   - cmd: 'set "FLANN_DIR=%MINICONDA%\envs\env\Library"'
+  
+  - cmd: DUMPBIN /SYMBOLS %FLANN_DIR%\lib\flann.lib
+
   - cmd: python setup.py flann_info bdist_wheel
   - cmd: pip install --pre --no-index --find-links dist cyflann
 
