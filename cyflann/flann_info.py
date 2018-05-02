@@ -97,15 +97,16 @@ def get_flann_info(flann_dir=None, use_cache=True):
             lib_dirs.append(pre('lib64'))
 
         _flann_info = {
-            'libraries': ['flann'],
+            'libraries': ['flann', 'flann_cpp'],
             'include_dirs': [pre('include')],
             'library_dirs': lib_dirs,
             'extra_compile_args': [],
             'extra_link_args': [],
             'runtime_library_dirs': lib_dirs if os.name != 'nt' else [],
         }
-        if os.name != 'nt':
-            _flann_info['libraries'].append('flann_cpp')
+        if os.name == 'nt':
+            _flann_info['libraries'] = [
+                l + '_s' for l in _flann_info['libraries']]
     else:
         _flann_info = get_pkg_info('flann')
         if _flann_info['libraries'] == ['flann_cpp']:
