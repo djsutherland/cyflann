@@ -84,9 +84,12 @@ def get_flann_info(flann_dir=None, use_cache=True):
 
     if flann_dir:
         pre = partial(os.path.join, flann_dir)
-        lib_dirs = [pre('lib')]
-        if os.path.isdir(pre('lib64')) and sys.maxsize > 2**32:
-            lib_dirs.append(pre('lib64'))
+        if os.name == 'nt':
+            lib_dirs = [pre('bin')]  # we want flann.dll
+        else:
+            lib_dirs = [pre('lib')]
+            if os.path.isdir(pre('lib64')) and sys.maxsize > 2**32:
+                lib_dirs.append(pre('lib64'))
 
         _flann_info = {
             'libraries': ['flann', 'flann_cpp'],
