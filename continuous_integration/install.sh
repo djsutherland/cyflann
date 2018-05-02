@@ -15,11 +15,9 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export sudo=''
         export python='/usr/local/bin/python'
 
-        brew update
-        brew unlink python
-        brew install --overwrite python@2 flann numpy
+        brew install flann
         pip install -U pip setuptools
-        pip install -U nose cython
+        pip install -U nose cython numpy
 
         export FLANN_DIR=$(brew --prefix)
     else
