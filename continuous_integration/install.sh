@@ -16,9 +16,9 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export python='/usr/local/bin/python'
 
         rm -f /usr/local/include/c++  # stupid oclint pre-installed
-        brew install flann
-        python -m pip install -U pip setuptools
-        python -m pip install -U nose cython numpy
+        brew install flann python
+        $python -m pip install -U pip setuptools
+        $python -m pip install -U nose cython numpy
 
         export FLANN_DIR=$(brew --prefix)
     else
