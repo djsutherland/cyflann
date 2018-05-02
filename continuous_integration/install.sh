@@ -8,7 +8,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
     if [[ "$os" == "Linux" ]]; then
         export sudo='sudo'
         export python='/usr/bin/python'
-        sudo apt-get install libflann-dev python-{pip,setuptools,numpy,nose}
+        sudo apt-get install libflann-dev python-{pip,setuptools,numpy,pytest}
         sudo pip install cython
         export FLANN_DIR=/usr
     elif [[ "$os" == "Darwin" ]]; then
@@ -18,7 +18,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         rm -f /usr/local/include/c++  # stupid oclint pre-installed
         brew install flann
         $python -m pip install -U pip setuptools
-        $python -m pip install -U nose cython numpy
+        $python -m pip install -U cython numpy pytest
 
         export FLANN_DIR=$(brew --prefix)
     else
@@ -67,7 +67,7 @@ else
     source $HOME/miniconda/etc/profile.d/conda.sh
     conda update --yes --quiet conda
     conda create --yes -c conda-forge -n env \
-        python=$PYTHON_VERSION pip nose setuptools cython \
+        python=$PYTHON_VERSION pip pytest setuptools cython \
         numpy=$NUMPY_VERSION flann=$FLANN_VERSION pyflann
     conda activate env
 

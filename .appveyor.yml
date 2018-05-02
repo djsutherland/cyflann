@@ -19,7 +19,7 @@ install:
   - cmd: conda update --yes --quiet conda
   - cmd: conda config --add channels conda-forge
 
-  - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% nose setuptools wheel cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
+  - cmd: conda create -n env --yes --quiet python=%PYTHON_VERSION% pytest setuptools wheel cython numpy=%NUMPY_VERSION% flann=%FLANN_VERSION% pyflann
   - cmd: conda activate env
 
   - cmd: 'set "FLANN_DIR=%MINICONDA%\envs\env\Library"'
@@ -30,5 +30,5 @@ build: off
 test_script:
   - mkdir empty_folder
   - cd empty_folder
-  - python -m nose --exe cyflann
+  - python -m pytest --pyargs cyflann
   - cd ..
