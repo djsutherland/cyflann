@@ -16,7 +16,9 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export python='/usr/local/bin/python3'
 
         rm -f /usr/local/include/c++  # stupid oclint pre-installed
-        brew install flann
+        echo "brew 'flann'" > Brewfile
+        echo "brew 'python'" >> Brewfile
+        brew update && brew bundle
         $python -m pip install -U pip setuptools
         $python -m pip install -U cython numpy pytest
 
