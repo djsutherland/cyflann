@@ -1,8 +1,13 @@
 #!/bin/bash
 # the Travis "install" step: see http://docs.travis-ci.com/ and ../.travis.yml
-set -ex
 
 os=$(uname)
+if [[ "$os" == "Darwin" ]]; then
+    __rvm_unload
+fi
+
+set -ex
+
 
 if [[ "$SYSTEM_PYTHON" ]]; then
     if [[ "$os" == "Linux" ]]; then
