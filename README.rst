@@ -1,10 +1,13 @@
 cyflann
 =======
 
-|Travis|_ |PyPI|_ |conda|_
+|Travis|_ |AppVeyor|_ |PyPI|_ |conda|_
 
 .. |Travis| image:: https://api.travis-ci.org/dougalsutherland/cyflann.svg?branch=master
 .. _Travis: https://travis-ci.org/dougalsutherland/cyflann
+
+.. |AppVeyor| image:: https://ci.appveyor.com/project/dougalsutherland/cyflann/branch/master?svg=true
+.. _AppVeyor: https://appveyor.com/dougalsutherland/cyflann
 
 .. |PyPI| image:: https://badge.fury.io/py/cyflann.svg
 .. _PyPI: https://badge.fury.io/py/cyflann/
@@ -29,14 +32,12 @@ cyflann is only tested with FLANNs since 1.8.4.
 cyflann supports FLANN's OpenMP wrappers, but has not been tested with its
 MPI or CUDA interfaces.
 
-It should work on Windows, but I haven't been able to get FLANN built there to test. If you care about that, consider helping to get a Windows build working in conda-forge (`PR <https://github.com/conda-forge/flann-feedstock/pull/1>`_).
-
 
 Installation
 ------------
 
 If you use the `Anaconda <https://store.continuum.io/cshop/anaconda/>`_ Python
-distribution, the easiest way to get both cyflann and FLANN is::
+distribution, the easiest way to get both cyflann and FLANN, including on Windows, is::
 
    conda install -c conda-forge cyflann
 
