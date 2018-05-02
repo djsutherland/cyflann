@@ -102,11 +102,11 @@ def get_flann_info(flann_dir=None, use_cache=True):
             'library_dirs': lib_dirs,
             'extra_compile_args': [],
             'extra_link_args': [],
-            'runtime_library_dirs': lib_dirs if os.name != 'nt' else [],
+            'runtime_library_dirs': lib_dirs,
         }
         if os.name == 'nt':
-            _flann_info['libraries'] = [
-                l + '_s' for l in _flann_info['libraries']]
+            _flann_info['libraries'].remove('flann_cpp')
+            _flann_info['runtime_library_dirs'] = []
     else:
         _flann_info = get_pkg_info('flann')
         if _flann_info['libraries'] == ['flann_cpp']:
