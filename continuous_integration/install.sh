@@ -13,7 +13,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export FLANN_DIR=/usr
     elif [[ "$os" == "Darwin" ]]; then
         export sudo=''
-        export python='/usr/local/bin/python'
+        export python='/usr/local/bin/python3'
 
         rm -f /usr/local/include/c++  # stupid oclint pre-installed
         brew install flann
