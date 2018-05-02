@@ -6,8 +6,8 @@ cyflann
 .. |Travis| image:: https://api.travis-ci.org/dougalsutherland/cyflann.svg?branch=master
 .. _Travis: https://travis-ci.org/dougalsutherland/cyflann
 
-.. |AppVeyor| image:: https://ci.appveyor.com/project/dougalsutherland/cyflann/branch/master?svg=true
-.. _AppVeyor: https://appveyor.com/dougalsutherland/cyflann
+.. |AppVeyor| image:: https://ci.appveyor.com/api/projects/status/github/dougalsutherland/cyflann?branch=master&svg=true
+.. _AppVeyor: https://ci.appveyor.com/project/dougalsutherland/cyflann
 
 .. |PyPI| image:: https://badge.fury.io/py/cyflann.svg
 .. _PyPI: https://badge.fury.io/py/cyflann/
