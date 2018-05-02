@@ -15,6 +15,7 @@ if [[ "$SYSTEM_PYTHON" ]]; then
         export sudo=''
         export python='/usr/local/bin/python'
 
+        rm -f /usr/local/include/c++  # stupid oclint pre-installed
         brew install flann
         pip install -U pip setuptools
         pip install -U nose cython numpy
