@@ -116,8 +116,12 @@ def get_flann_info(flann_dir=None, use_cache=True):
             _flann_info['libraries'].insert(0, 'flann')
 
     if os.name == 'nt':
-        # flann_cpp.lib doesn't exist for some reason
-        _flann_info['libraries'].remove('flann_cpp')
         _flann_info['runtime_library_dirs'] = []
+        if "CYFLANN_USE_STATIC" in os.environ:
+            _flann_info['libraries'] = [
+                l + '_s' for l in _flann_info['libraries']]
+        else:
+            # flann_cpp.lib doesn't exist for some reason
+            _flann_info['libraries'].remove('flann_cpp')
 
     return _flann_info
