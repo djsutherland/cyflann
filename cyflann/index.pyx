@@ -497,6 +497,12 @@ cdef class FLANNIndex:
 
         cdef float[:] the_query = self._check_array(query, dim=1)
 
+        # The maximum number of returned indices is limited not just by 
+        # the passed `max_nn` argument but also this `checks` global in 
+        # the parameters.
+        if self.params['checks'] < max_nn:
+            self.params['checks'] = max_nn
+
         cdef int npts = self._data.shape[0], dim = self._data.shape[1]
         cdef int qdim = the_query.shape[0]
         if qdim != dim:
