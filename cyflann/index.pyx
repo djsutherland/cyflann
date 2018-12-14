@@ -314,6 +314,9 @@ cdef class FLANNIndex:
         array = np.require(array,
                     requirements=['C_CONTIGUOUS', 'ALIGNED'],
                     dtype=np.float32)
+        if dim == 1 and array.ndim == 2 and array.size == 2:
+            # Let's us pass in [1,2] shape query points to nn_radius
+            array = array.squeeze()
         if dim == 2 and array.ndim == 1:
             array = array.reshape(1, array.size)
         if array.ndim != dim:
