@@ -15,6 +15,13 @@ except ImportError as e:
     # Don't do this in the setup() requirements, because otherwise pip and
     # friends get too eager about updating numpy.
 
+# As seen in `appveyor.yml`, if `FLANN` is installed via conda we need to 
+# set the FLANN_DIR environment variable.
+if 'CONDA_PREFIX' in os.environ:
+    CONDA_PREFIX = os.environ['CONDA_PREFIX']
+    if not 'FLANN_DIR' in os.environ:
+        os.environ['FLANN_DIR'] = os.path.join(CONDA_PREFIX, 'Library')
+
 try:
     from setuptools import setup, Command
     from setuptools.extension import Extension
