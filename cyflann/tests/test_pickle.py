@@ -4,9 +4,14 @@ except ImportError:
     import pickle
 
 import numpy as np
+import sys
 
 import cyflann
+import pytest
 
+
+@pytest.mark.skipif(sys.version_info < (3,) and sys.platform == 'win32',
+                    reason="pickling is broken on win32 with python 2")
 def test_pickle():
     data = np.random.normal(scale=100, size=(1000, 3))
     query = np.random.normal(scale=100, size=(100, 3))
