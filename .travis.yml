@@ -4,14 +4,13 @@ compiler:
   - gcc
 install: source continuous_integration/install.sh
 script: bash continuous_integration/test.sh
-dist: xenial
 matrix:
   include:
     # linux entries:
     - env: SYSTEM_PYTHON="1"
       os: linux
       sudo: true
-      dist: trusty
+      dist: xenial
       compiler: gcc
     - env: PYTHON_VERSION="2.7" NUMPY_VERSION="1.11" FLANN_VERSION="1.8.4"
       os: linux
