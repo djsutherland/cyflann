@@ -4,6 +4,7 @@ compiler:
   - gcc
 install: source continuous_integration/install.sh
 script: bash continuous_integration/test.sh
+dist: xenial
 matrix:
   include:
     # linux entries:

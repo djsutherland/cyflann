@@ -12,8 +12,8 @@ set -ex
 if [[ "$SYSTEM_PYTHON" ]]; then
     if [[ "$os" == "Linux" ]]; then
         export sudo='sudo'
-        export python='/usr/bin/python'
-        sudo apt-get install libflann-dev python-{pip,setuptools,numpy,pytest}
+        export python='/usr/bin/python3'
+        sudo apt-get install libflann-dev python3-{pip,setuptools,numpy,pytest}
         sudo pip install cython
         export FLANN_DIR=/usr
     elif [[ "$os" == "Darwin" ]]; then
