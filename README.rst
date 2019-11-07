@@ -63,7 +63,7 @@ Installing FLANN
 
 **Anaconda:** ``conda install -c conda-forge flann`` (included as a requirement by the cyflann package).
 
-**OSX:** using `Homebrew <http://brew.sh>`_, ``brew install homebrew/science/flann``; this gives you 1.9.1, but if ``pkg-config`` doesn't work for you for some reason, it's ``FLANN_DIR=$(brew --prefix)``.
+**OSX:** using `Homebrew <http://brew.sh>`_, ``brew install flann``; this gives you 1.9.1, but if ``pkg-config`` doesn't work for you for some reason, it's ``FLANN_DIR=$(brew --prefix)``.
 
 **Ubuntu:** ``apt-get install libflann1 flann-dev``; set ``FLANN_DIR=/usr``.
 
