@@ -25,9 +25,10 @@ from .flann_info import get_flann_info
 from .extensions import FLANNExtension
 
 # A test function, if we have nose.
-try:
-    from numpy.testing import nosetester
-    test = nosetester.NoseTester().test
-    del nosetester
-except ImportError:
-    pass
+# RAM: this is deprecated
+# try:
+#     from numpy.testing import nosetester
+#     test = nosetester.NoseTester().test
+#     del nosetester
+# except ImportError:
+#     pass

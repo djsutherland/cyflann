@@ -21,6 +21,9 @@ if os.name == 'nt':
     # set the FLANN_DIR environment variable.
     if 'CONDA_PREFIX' in os.environ and not 'FLANN_DIR' in os.environ:
         os.environ['FLANN_DIR'] = os.path.join(os.environ['CONDA_PREFIX'], 'Library')
+elif os.name == 'posix':
+    # Must install flann via `sudo apt-get install libflann-dev`
+    os.environ['FLANN_DIR'] = '/usr'
 
 try:
     from setuptools import setup, Command
