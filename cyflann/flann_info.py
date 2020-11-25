@@ -1,7 +1,7 @@
 import errno
 from functools import partial
 import json
-import os
+import os, sys
 import subprocess
 import sys
 
@@ -125,3 +125,7 @@ def get_flann_info(flann_dir=None, use_cache=True):
         _flann_info['libraries'].remove('flann_cpp')
 
     return _flann_info
+
+if __name__ == '__main__':
+    import pprint
+    pprint.pprint(get_flann_info())
